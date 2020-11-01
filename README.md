@@ -3,5 +3,5 @@ Job schedulers play an important role in selecting optimal resources for the sub
 We develop our algorithms for tree-based network topologies. 
 The proposed algorithms aim at minimizing network contention by allocating nodes on the least contended switches. We also show that allocating nodes in powers of two leads to a decrease in inter-switch communication for MPI communications, which further improves performance. We implement and evaluate our algorithms using SLURM, a widely-used and well-known job scheduler.
 
-## Academic publications
+## Academic Publications
 - This work has been accepted at [49th International Conference on Parallel Processing - ICPP in  Edmonton, Canada, 2020](https://jnamaral.github.io/icpp20/) as workshop paper. The full text can be found [here](./ICPP_full_paper.pdf). The work was presented at the [16th International Workshop on Scheduling and Resource Management for Parallel and Distributed Systems](https://srmpds.github.io/). The slides for the presentation can be accessed [here](./SRMPDS_slides.pptx). The recorded presentation (20 min) can be accessed [here](https://www.youtube.com/watch?v=h5KQ1v3bWAQ&feature=youtu.be).
