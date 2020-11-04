@@ -11,8 +11,8 @@ The proposed algorithms aim at minimizing network contention by allocating nodes
 ### Installing and setting up SLURM
 Our work proposes three algorithms which have been implemented in SLURM. We use SLURM version 19.05.0 in our work.
 The following steps describe how to setup SLURM and use any of the proposed algorithms:
-* Clone the source code present [here](https://github.com/Priya2698/slurm_changes). To install SLURM and its associated components follow the instructions provided at the [official site](https://slurm.schedmd.com/quickstart_admin.html). Instructions for installing SLURM have also been provided in the Appendix.
-* In order to execute the proposed algorithms, we use the environment variable JOBAWARE. **Before running `make` while building SLURM**,add -DJOBAWARE to CFLAGS in the following Makefiles:
+* Clone the source code present [here](https://github.com/Priya2698/slurm_changes) in the home directory. To install SLURM and its associated components follow the instructions provided at the [official site](https://slurm.schedmd.com/quickstart_admin.html). Instructions for installing SLURM have also been provided in the [Appendix](#appendix).
+* In order to execute the proposed algorithms, we use the environment variable JOBAWARE. **Before running `make` while building SLURM**, add `-DJOBAWARE` to `CFLAGS` in the following Makefiles:
 ```
 /src/plugins/sched/backfill/Makefile
 /src/slurmctld/Makefile
@@ -20,12 +20,12 @@ The following steps describe how to setup SLURM and use any of the proposed algo
 ```
 Add the library `-lm` to `LIBS` in `/src/slurmctld/Makefile`.
 * Run `make` and `make install` after making the above changes to the Makefiles.
-* Run the script 'makefiles.py' outside the SLURM directory. This creates a copy of Makefile for each algorithms with appropraite environment varible.
+* Run the script `makefiles.py` outside the SLURM directory (The script assumes that the name of code-repo is slurm_changes and is present in the home directory. Make appropriate changes to the path in the script if needed). This creates a copy of Makefile for each algorithms with appropraite environment varible.
 ```bash
 python3 makefiles.py
 ```
 ### Running jobs
-After setting up SLURM as described above, we can run the default SLURM algorithm or one of the proposed algorithm (greedy, balanced, adaptive). Run the script `prepare_run.sh` outside SLURM directory with appropriate input as shown to use the different algorithms.
+After setting up SLURM as described above, we can run the default SLURM algorithm or one of the proposed algorithm (greedy, balanced, adaptive). Run the script `prepare_run.sh` outside SLURM directory (The script assumes that the name of code-repo is slurm_changes and is present in the home directory. Make appropriate changes to the path in the script if needed) with appropriate input as shown to use the different algorithms.
 * Default SLURM algorithm
 ```bash
 bash prepare_run.sh default
@@ -55,6 +55,14 @@ void hop(struct job_record *job_ptr){
 
 }
 ```
+### Submitting Jobs
+When using the greedy or balanced algorithm, use the comment parameter of `sbatch` command to specify whether a job is communication-intensive or compute-intensive. 
+For a communication-intensive job use `--comment=1` and for compute-intensive use `--comment=0`. The sbatch command will be similar to this:
+```
+'sbatch --job-name=test_job --comment=1 --nodes=4 jobfile
+```
+When submitting jobs using the adaptive algorithm, in addition to specifying if a job is communication-intensive, also provide the commmunication pattern of the job. Currently, the code supports five communication-patterns: RHVD (Recursive-halving vector doubling), RD (Recursive doubling/halving), Binomial, Ring, and a pattern similar to CMC-2D (70% Binomial and 30% RD). The comment parameter for these patterns will be `--comment=1:1` for RHVD, `--comment=1:2` for RD, `--comment=1:3` for Binomial, `--comment=1:4` for Ring, and `--comment=1:5` for CMC-2D.
+
 ### Appendix
 Follow these steps to install and build SLURM and its associate components:
 #### Install Pre-requisites
@@ -118,7 +126,7 @@ sudo mkdir -p /var/spool/slurmctld /var/spool/slurmd /var/log/slurm
 sudo chown ubuntu /var/spool/slurmctld /var/spool/slurmd /var/log/slurm
 ```
 #### SLURM configuration files
-SLURM requires `slurm.conf` and `topology.conf` files to be present in `/usr/local/etc`. The service files should be present at `/etc/systemd/system`. These files have also been provided in this repository [here]().
+SLURM requires `slurm.conf` and `topology.conf` files to be present in `/usr/local/etc`. The service files should be present at `/etc/systemd/system`. These files have also been provided in this repository [here](./slurm_config_files).
 Copy them to the appropriate folders.
 ```
 sudo cp slurm.conf topology.conf slurmdbd.conf /usr/local/etc
