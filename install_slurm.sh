@@ -41,7 +41,7 @@ sudo chown ubuntu /var/spool/slurmctld /var/spool/slurmd /var/log/slurm
 
 echo 'Move files'
 cd /home/ubuntu
-sudo cp slurm.conf topology.conf slurmdbd.conf hpc2010.conf /usr/local/etc
+sudo cp slurm.conf topology.conf slurmdbd.conf /usr/local/etc
 sudo cp slurmctld.service slurmdbd.service slurmd.service /etc/systemd/system
 
 echo 'Start and check status'

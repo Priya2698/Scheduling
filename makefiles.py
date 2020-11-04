@@ -6,7 +6,7 @@ import sys
 import subprocess
 from shutil import copyfile
 
-os.chdir("slurm-19.05.0/src/plugins/select/linear")
+os.chdir("slurm_changes/src/plugins/select/linear")
 print(os.getcwd())
 copyfile('Makefile', 'Makefile_default')
 copyfile('Makefile', 'Makefile_greedy')
