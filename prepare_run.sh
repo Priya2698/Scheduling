@@ -2,7 +2,7 @@
 algo=$1
 
 echo "Checking branch, status and setting Makefile"
-cd ~/slurm_changes/src/plugins/select/linear
+cd slurm_changes/src/plugins/select/linear
 if [[ $algo = "default" ]];
 then
     echo "Default"
