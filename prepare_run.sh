@@ -29,7 +29,7 @@ then
     git checkout algo2
     git branch
     cp Makefile_ada Makefile
-elif [[ $algo = "inter"]];
+elif [[ $algo = "inter" ]];
 then
     echo "interference"
     git checkout interference
