@@ -59,12 +59,12 @@ void hop(struct job_record *job_ptr){
 When using the greedy or balanced algorithm, use the comment parameter of `sbatch` command to specify whether a job is communication-intensive or compute-intensive. 
 For a communication-intensive job use `--comment=1` and for compute-intensive use `--comment=0`. The sbatch command will be similar to this:
 ```
-'sbatch --job-name=test_job --comment=1 --nodes=4 jobfile
+sbatch --job-name=test_job --comment=1 --nodes=4 jobfile
 ```
 When submitting jobs using the adaptive algorithm, in addition to specifying if a job is communication-intensive, also provide the commmunication pattern of the job. Currently, the code supports five communication-patterns: RHVD (Recursive-halving vector doubling), RD (Recursive doubling/halving), Binomial, Ring, and a pattern similar to CMC-2D (70% Binomial and 30% RD). The comment parameter for these patterns will be `--comment=1:1` for RHVD, `--comment=1:2` for RD, `--comment=1:3` for Binomial, `--comment=1:4` for Ring, and `--comment=1:5` for CMC-2D.
 
 ### Appendix
-Follow these steps to install and build SLURM and its associate components:
+Follow these steps to install and build SLURM and other required components:
 #### Install Pre-requisites
 ```bash
 sudo apt update
@@ -126,7 +126,7 @@ sudo mkdir -p /var/spool/slurmctld /var/spool/slurmd /var/log/slurm
 sudo chown ubuntu /var/spool/slurmctld /var/spool/slurmd /var/log/slurm
 ```
 #### SLURM configuration files
-SLURM requires `slurm.conf` and `topology.conf` files to be present in `/usr/local/etc`. The service files should be present at `/etc/systemd/system`. These files have also been provided in this repository [here](./slurm_config_files).
+SLURM requires `slurm.conf` and `topology.conf` files to be present in `/usr/local/etc`. The service files should be present at `/etc/systemd/system`. These files have also been provided in this repository [here](./slurm_config_files). Before, using these files make necessary changes to the node names, node address and other fields as required.
 Copy them to the appropriate folders.
 ```
 sudo cp slurm.conf topology.conf slurmdbd.conf /usr/local/etc
@@ -146,6 +146,8 @@ sudo systemctl start slurmd
 sudo systemctl status slurmd
 ```
 If the build was successful, the status will show the daemons to be active and running.
+
+NOTE: slurmdbd should be be succesfully running before starting slurmctld and slurmd. Therefore, enable and start the daemons in the same order as shown (slurmdbd, followed by slurmctld and then slurmd).
 
 #### Add Cluster
 Add a cluster to SLURM (here the name is cluster)
